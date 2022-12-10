@@ -32,15 +32,27 @@ int charToInt(char numero){
     return numero - 48;
 }
 
-void moverLetra(char **matriz, int linhaPerde, int linhaGanha){
-    char auxi;
-    int indexFim1 = strlen(matriz[linhaPerde]) - 1;
-    int indexZero = strlen(matriz[linhaGanha]);
+void moverLetras(char **matriz, int linhaPerde, int linhaGanha, int numLetras){
+    char auxi[numLetras];
+    int tamanhoPerde = strlen(matriz[linhaPerde]);
+    int tamanhoGanha = strlen(matriz[linhaGanha]);
+    int i, j=0;
+    int indice = (tamanhoPerde - numLetras);
 
+    for (i = indice; i < tamanhoPerde; i++){
+        matriz[linhaGanha][tamanhoGanha+j] = matriz[linhaPerde][i];
+        j++;
+    }
+
+    matriz[linhaGanha][tamanhoGanha+j] = '\0';
+    matriz[linhaPerde][indice] = '\0';
+
+    /*
     auxi = matriz[linhaPerde][indexFim1];
     matriz[linhaPerde][indexFim1] = '\0';
     matriz[linhaGanha][indexZero] = auxi;
     matriz[linhaGanha][indexZero + 1] = '\0';
+    */
 }
 
 int lerComando(char *comando, int tamanho){
@@ -124,9 +136,7 @@ int main(){
             infor = infor/10;
             quantidadeMovimento = infor;
 
-            for (i = 0; i < quantidadeMovimento; i++){
-                moverLetra(pilhaInversa, linhaPerde, linhaRecebe);
-            }
+            moverLetras(pilhaInversa, linhaPerde, linhaRecebe, quantidadeMovimento);
         }else{
 
         }
