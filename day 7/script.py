@@ -13,55 +13,44 @@ def tipoDeComando(comando):
 with open("day 7/input.txt", "r") as arquivoTexto:
     comandos = arquivoTexto.readlines()
 
-apontador = 0
-chave = ''
 folder = dict()
 pastas = list()
 
 for comando in comandos:
     tipoComando = tipoDeComando(comando) 
-    
+    comando = comando.removesuffix('\n')
+
     if tipoComando == 1:
-        apontador = 0
-        pastas.append(comando[5:-1])
-        chave = comando[5:-1]
+        chave = comando[5:]
     elif tipoComando == 3:
-        apontador += 1
-        chave = comando[5:-1]
-        if comando not in pastas: pastas.append(comando[5:-1])
-    elif tipoComando == 2:
-        apontador -= 1
-        chave = pastas[-2]
+        chave = comando[5:]
     elif tipoComando == 4:
         if chave not in folder.keys(): folder[chave] = list()
     elif tipoComando == 0:
         folder[chave].append(comando)
 
 for key in folder:
-    for i in range(0, len(folder[key])):
-        folder[key][i] = folder[key][i].removesuffix('\n')
+    pastas.append(key)
 
-print(pastas)
-
-for key in folder:
-    naoTemPastas = True
-    if type(folder[key]) == list:
-        for arquivo in folder[key]:
-            if "dir" in arquivo and arquivo[4:] in pastas:
-                naoTemPastas = False
-                break
-    else:
-        naoTemPastas = False 
-
-    if naoTemPastas:
+while (len(pastas) > 0):
+    for key in folder:
+        naoTemPastas = True
         soma = 0
-        pastas.remove(key)
-        for arquivo in folder[key]:
-            if "dir" in arquivo:
-                soma += folder[arquivo[4:]]
-            else:
-                soma += int(arquivo.split()[0])
-        folder[key] = soma
+        if type(folder[key]) == list:
+            for arquivo in folder[key]:
+                if "dir " in arquivo:
+                    pasta = arquivo[4:]
+                    if pasta in pastas:
+                        naoTemPastas = False
+                        break
+                    else:
+                        soma += folder[pasta]
+                else:
+                    soma += int(arquivo.split()[0])
+            if naoTemPastas:
+                pastas.remove(key)
+                folder[key] = soma
+                print(pastas)
+
 print(pastas)
-print('\n')
 print(folder)
