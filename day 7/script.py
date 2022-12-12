@@ -33,16 +33,16 @@ for key in folder:
     pastas.append(key)
 
 while (len(pastas) > 0):
-    for key in folder:
-        naoTemPastas = True
-        soma = 0
+    for key in folder.keys():
         if type(folder[key]) == list:
+            naoTemPastas = True
+            soma = 0
             for arquivo in folder[key]:
                 if "dir " in arquivo:
                     pasta = arquivo[4:]
-                    if pasta in pastas:
+                    print(pasta)
+                    if  pasta in pastas:
                         naoTemPastas = False
-                        break
                     else:
                         soma += folder[pasta]
                 else:
@@ -50,7 +50,6 @@ while (len(pastas) > 0):
             if naoTemPastas:
                 pastas.remove(key)
                 folder[key] = soma
-                print(pastas)
 
 print(pastas)
 print(folder)
