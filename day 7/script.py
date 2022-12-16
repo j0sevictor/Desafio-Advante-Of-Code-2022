@@ -32,24 +32,28 @@ for comando in comandos:
 for key in folder:
     pastas.append(key)
 
+print(len(pastas))
+
 while (len(pastas) > 0):
     for key in folder.keys():
         if type(folder[key]) == list:
             naoTemPastas = True
             soma = 0
             for arquivo in folder[key]:
-                if "dir " in arquivo:
+                if "dir" in arquivo[:4]:
                     pasta = arquivo[4:]
-                    print(pasta)
-                    if  pasta in pastas:
+                    if  type(folder[pasta]) == list:
                         naoTemPastas = False
-                    else:
+                        break
+                    elif type(folder[pasta]) == int:
                         soma += folder[pasta]
+                    else:
+                        print('ERRO')
                 else:
                     soma += int(arquivo.split()[0])
             if naoTemPastas:
                 pastas.remove(key)
                 folder[key] = soma
 
-print(pastas)
+print(len(pastas))
 print(folder)
